@@ -79,6 +79,7 @@ export default {
         <div class="q-flex-center" id="nav-circles">
           <!-- Top row -->
           <div class="top-row-container">
+            <h1>Add A Fish</h1>
             <div class="circle" @click="openAddFishModal">
               <img src="../assets/fish.png" alt="circle image of fish. ">
             </div>
