@@ -22,6 +22,7 @@ yarn lint
 npm run lint
 ```
 
+# New line
 
 ### Format the files
 ```bash
