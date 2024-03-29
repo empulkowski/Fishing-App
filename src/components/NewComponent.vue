@@ -1,11 +1,11 @@
 <script>
 export default {
-name: "NewComponent"
+  name: "NewComponent"
 }
 </script>
 
 <template>
-  $END$
+
 </template>
 
 <style scoped>
