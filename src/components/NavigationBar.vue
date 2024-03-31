@@ -7,15 +7,15 @@
           <img src="../assets/myCatch.png" alt="Logo" style="max-height: 2rem;">
         </q-btn>
       </router-link>
+
       <!-- (Welcome Message) -->
       <q-toolbar-title>
-        Welcome, Emily
+        Welcome, {{ userName }}
       </q-toolbar-title>
 
-      <!-- Right-->
-<!--      <q-avatar>-->
-<!--        &lt;!&ndash; <img :src="userProfileImage" alt="Profile Image"> &ndash;&gt;-->
-<!--      </q-avatar>-->
+      <router-link to="/login">
+        <q-btn icon="fas fa-user" round flat></q-btn>
+      </router-link>
     </q-toolbar>
   </div>
 </template>
@@ -25,16 +25,12 @@ export default {
   props: {
     userName: {
       type: String,
-      required: true,
-    },
-    userProfileImage: {
-      type: String,
-      required: true,
+      default: 'Guest'
     },
   },
   methods: {
     goHome() {
-      // logic to go to the home page
+      this.$router.push('/')
       console.log('Navigating home...');
     },
   },
