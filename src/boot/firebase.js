@@ -1,5 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -16,7 +18,7 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
-
+export const db = getFirestore(firebaseApp);
 
 export default firebaseApp;
-export { firebaseAuth as auth };
+export {firebaseAuth as auth,};

@@ -1,6 +1,5 @@
 <template>
   <div class="q-pa-md">
-
     <q-toolbar class="navigation-bar">
       <router-link to="/">
         <q-btn flat dense round @click="goHome">
@@ -13,7 +12,6 @@
         Welcome, {{ userName }}
       </q-toolbar-title>
 
-
       <div class="user-menu">
         <q-btn icon="fas fa-user" flat round ref="myRef"></q-btn>
         <q-menu ref="myMenu" anchor="top right" self="top left" :target="$refs.myRef" @mouseleave="closeMenu">
@@ -24,51 +22,67 @@
           </q-list>
         </q-menu>
       </div>
-<!--      <router-link to="/login">-->
-<!--        <q-btn icon="fas fa-user" round flat></q-btn>-->
-<!--      </router-link>-->
     </q-toolbar>
   </div>
 </template>
 
 <script>
-import { auth } from '../boot/firebase';
+import { auth } from 'src/boot/firebase';
+import { db } from 'src/boot/firebase';
+import { doc, getDoc } from "firebase/firestore";
 export default {
-  props: {
-    userName: {
-      type: String,
-      default: 'Guest'
-    },
-  },
   data() {
     return {
-      auth: auth
+      auth: auth,
+      userName: 'Guest',
     }
   },
+  watch: {
+    '$route': function() {
+      this.updateUsername();
+    },
+  },
+  created() {
+    this.updateUsername();
+  },
+
   methods: {
+    async updateUsername() {
+      var user = auth.currentUser;
+      if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          this.userName = docSnap.data().username;
+        } else {
+          console.log("No such document!");
+        }
+      } else {
+        this.userName = 'Guest';
+      }
+    },
+
     closeMenu() {
       this.$refs.myMenu.hide()
     },
+
     goHome() {
       this.$router.push('/')
       console.log('Navigating home...');
     },
+
     async logout() {
       try {
         console.log(auth)
         await auth.signOut();
+        this.userName = 'Guest';
         this.$router.push('/login'); // redirects the user to the login page
       } catch (error) {
         console.error('An error occurred during sign out:', error);
       }
     }
-
   },
-  mounted() {
-    this.$nextTick(function () {
- console.log(this.$refs.myRef);
-    });
-  }
 }
 </script>
 
