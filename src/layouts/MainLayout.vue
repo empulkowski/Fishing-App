@@ -31,9 +31,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.circle img {
-  width: 100%;
-}
 
 
 

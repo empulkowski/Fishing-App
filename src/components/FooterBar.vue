@@ -1,11 +1,13 @@
 <template>
-  <div class="q-pa-md">
+  <div id="content-container">
+    <div class="q-pa-md">
     <div class="footer-content">
 <!--      <p>{{ currentCity }}</p>-->
       <p>{{ currentDate }}</p>
       <p>{{ currentTime }}</p>
       <p v-if="currentTemperature !== null">{{ currentTemperature }}°F</p>
     </div>
+  </div>
   </div>
 </template>
 
@@ -105,8 +107,15 @@ export default {
 <style scoped>
 .q-pa-md {
   background-color: #143D56;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
-
+#content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 .footer-content {
   color: white;
   display: flex;

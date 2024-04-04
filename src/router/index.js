@@ -3,6 +3,7 @@ import { createRouter, createMemoryHistory, createWebHistory, createWebHashHisto
 import routes from './routes';
 import CatchLog from 'src/pages/CatchLog.vue';
 import IndexPage from 'src/pages/IndexPage.vue';
+import FishSearch from 'src/pages/FishSearch.vue';
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -22,6 +23,11 @@ export default route(function (/* { store, ssrContext } */) {
         path: '/catch-log',
         name: 'CatchLog',
         component: CatchLog,
+      },
+      {
+        path: '/fishsearch',
+        name: 'FishSearch',
+        component: FishSearch,
       },
     ],
 
