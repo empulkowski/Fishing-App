@@ -2,13 +2,8 @@
   <q-page>
     <div>
       <!-- Skeleton loader -->
-      <q-skeleton
-        :loading="loadingFishRecords"
-        :bordered="true"
-        :animated="true"
-        :size="size"
-      >
         <q-table
+          class="my-table"
           v-if="!loadingFishRecords"
           :rows="fishRecords"
           :columns="columns"
@@ -22,12 +17,23 @@
           <template v-slot:body="props">
             <q-tr :props="props" @click="openDetailsDialog(props.row)">
               <q-td :props="props" auto-width v-for="col in columns" :key="col.name">
-                {{ props.row[col.name] }}
+      <span v-if="col.name === 'species'" style="display: flex; align-items: center;">
+        <q-btn round dense flat icon="more_vert" @click.stop="openDetailsDialog(props.row)" />
+        {{ props.row[col.name] }}
+      </span>
+                <span v-else>
+        {{ props.row[col.name] }}
+      </span>
               </q-td>
             </q-tr>
           </template>
         </q-table>
-      </q-skeleton>
+      <q-skeleton
+        v-else
+        :bordered="true"
+        :animated="true"
+        :size="size"
+      />
 
       <catch-details-dialog
         v-if="!loadingFishRecords"
@@ -43,9 +49,10 @@
 
 <script>
 import CatchDetailsDialog from '../components/CatchDetailsDialog.vue';
-import { defineComponent, ref, onMounted } from 'vue';
+import {defineComponent, ref, onMounted} from 'vue';
 import firebaseApp from 'src/boot/firebase';
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import {getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where} from 'firebase/firestore';
+import {getAuth} from 'firebase/auth';
 
 export default defineComponent({
   components: {
@@ -54,7 +61,7 @@ export default defineComponent({
   setup() {
     const db = getFirestore(firebaseApp);
     const fishRecords = ref([]);
-    const pagination = ref({ page: 1, rowsPerPage: 10 });
+    const pagination = ref({page: 1, rowsPerPage: 10});
     const sortBy = ref(null);
     const descending = ref(false);
     const dialogVisible = ref(false);
@@ -82,11 +89,11 @@ export default defineComponent({
     };
 
     const columns = [
-      { name: 'species', label: 'Species', align: 'left', field: 'species', sortable: true },
-      { name: 'date', label: 'Date', align: 'left', field: 'date', sortable: true },
-      { name: 'location', label: 'Location', align: 'left', field: 'location', sortable: true },
-      { name: 'weight', label: 'Weight', align: 'left', field: 'weight', sortable: true },
-      { name: 'length', label: 'Length', align: 'left', field: 'length', sortable: true },
+      {name: 'species', label: 'Species', align: 'left', field: 'species', sortable: true},
+      {name: 'date', label: 'Date', align: 'left', field: 'date', sortable: true},
+      {name: 'location', label: 'Location', align: 'left', field: 'location', sortable: true},
+      {name: 'weight', label: 'Weight', align: 'left', field: 'weight', sortable: true},
+      {name: 'length', label: 'Length', align: 'left', field: 'length', sortable: true},
     ];
 
     const deleteCatchHandler = (catchId) => {
@@ -107,10 +114,12 @@ export default defineComponent({
 
     const fetchFishRecords = async () => {
       try {
-        loadingFishRecords.value = true; // Set loading state to true before fetching data
+        loadingFishRecords.value = true;
+        const auth = getAuth();
+        const userId = auth.currentUser.uid;
         const fishCollection = collection(db, 'fish');
-        const querySnapshot = await getDocs(fishCollection);
-        const records = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const querySnapshot = await getDocs(query(fishCollection, where("userId", "==", userId)));
+        const records = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
         fishRecords.value = records;
         console.log('Fish records fetched successfully.');
       } catch (error) {
@@ -121,8 +130,6 @@ export default defineComponent({
         console.log('Loading state set to false.');
       }
     };
-
-
 
 
     const addFishToDatabase = (fishData) => {
@@ -204,9 +211,8 @@ export default defineComponent({
 
 <style scoped>
 .q-page {
-  margin: 50px;
+  margin: 100px;
 }
-th.text-left:nth-child(5) {
-font-family: "Bebas Neue", Serif;
-}
+
+
 </style>

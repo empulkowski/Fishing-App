@@ -15,9 +15,14 @@
       <div class="user-menu">
         <q-btn icon="fas fa-user" flat round ref="myRef"></q-btn>
         <q-menu ref="myMenu" anchor="top right" self="top left" :target="$refs.myRef" @mouseleave="closeMenu">
+
           <q-list clickable class="my-drop-down">
-            <q-item v-close-popup>
+            <q-item v-close-popup v-if="auth.currentUser" class="pointer-cursor">
               <q-item-section @click="logout">Logout</q-item-section>
+            </q-item>
+
+            <q-item v-close-popup v-else class="pointer-cursor">
+              <q-item-section @click="login">Login</q-item-section>
             </q-item>
           </q-list>
         </q-menu>
@@ -66,7 +71,9 @@ export default {
     closeMenu() {
       this.$refs.myMenu.hide()
     },
-
+    login() {
+      this.$router.push('/login');
+    },
     goHome() {
       this.$router.push('/')
       console.log('Navigating home...');
@@ -112,5 +119,8 @@ html body.desktop.no-touch.body--light div#q-app div.q-layout.q-layout--standard
 
 .my-drop-down . q-item{
   padding: 10px 20px;
+}
+.pointer-cursor {
+  cursor: pointer;
 }
 </style>

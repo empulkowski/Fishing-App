@@ -3,6 +3,7 @@ import {ref} from 'vue';
 import AddFishModal from '../components/AddFishModal.vue';
 import AddHotSpotModal from '../components/AddHotSpotModal.vue'
 import FishMap from '../components/FishMap.vue';
+import FriendsListModal from "../components/FriendsListModal.vue";
 
 export default {
   name: 'IndexPage',
@@ -10,6 +11,7 @@ export default {
     AddFishModal,
     AddHotSpotModal,
     FishMap,
+    FriendsListModal,
   },
   setup() {
     const isAddFishModalVisible = ref(false);
@@ -26,14 +28,18 @@ export default {
       isAddHotSpotModalVisible.value = false;
     };
     const addFishToDatabase = (fishData) => {
-      // Perform logic to add fish data to the database
       console.log('Adding fish to the database:', fishData);
-
-      // Close the modal
       isAddFishModalVisible.value = false;
     };
 
+    const isFriendsListModalVisible = ref(false);
+    const openFriendsListModal = () => {
+      console.log("opening friends list");
+      isFriendsListModalVisible.value = true;
+    };
     return {
+      isFriendsListModalVisible,
+      openFriendsListModal,
       isAddHotSpotModalVisible,
       isAddFishModalVisible,
       openAddFishModal,
@@ -82,8 +88,8 @@ export default {
           <img src="../assets/fish.png" alt="circle image of fish. ">
         </div>
 
-        <div class="circle">
-          <img src="../assets/friend.png" alt="circle image of friend. ">
+        <div class="circle" @click="openFriendsListModal">
+          <img src="../assets/friend.png" alt="circle image of a friend. ">
         </div>
 
         <!-- Bottom row -->
@@ -92,7 +98,7 @@ export default {
         </router-link>
 
         <router-link class="circle" :to="{ name: 'FishSearch' }">
-          <img src="../assets/stats3.png" alt="circle image of camera.">
+          <img src="../assets/searchFish.png" alt="circle image of fish search.">
         </router-link>
       </div>
 
@@ -115,8 +121,9 @@ export default {
       </div>
     </div>
     <!-- Modals -->
+    <FriendsListModal :show-modal="isFriendsListModalVisible" @update:show-modal="val => isFriendsListModalVisible = val" />
     <add-fish-modal :show-modal="isAddFishModalVisible" @update:show-modal="val => isAddFishModalVisible = val"
-                    @addFish="addFishToDatabase"/>
+    />
     <add-hot-spot-modal :show-modal="isAddHotSpotModalVisible"
                         @update:show-modal="val => isAddHotSpotModalVisible = val" @close-modal="closeAddHotSpotModal"/>
   </q-page>

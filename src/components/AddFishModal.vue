@@ -1,6 +1,7 @@
 <script>
 import {addDoc, collection, getFirestore} from "firebase/firestore";
 import firebaseApp from "boot/firebase";
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'AddFishModal',
@@ -23,7 +24,7 @@ export default {
       this.$emit('update:showModal', value);
     },
     async addFish() {
-//add fish data to your database/my data properties/ store values entered by user
+      const auth = getAuth();
       const fishData = {
         species: this.species,
         date: this.date,
@@ -34,20 +35,22 @@ export default {
         tackle: this.tackle,
         notes: this.notes,
         temperature: this.temperature,
-
+        userId: auth.currentUser.uid
       };
       const db = getFirestore(firebaseApp);
 
         try {
-          const fishCollection = collection(db, 'fish'); // Replace 'fish' with your collection name
+          const fishCollection = collection(db, 'fish');
           await addDoc(fishCollection, fishData);
           console.log('Record added successfully!');
+          this.resetForm();
+          this.updateModal(false);
         } catch (error) {
           console.error('Error adding record: ', error);
         }
 
-// method to add the data to your database
-      this.$emit('addFish', fishData);
+// // method to add the data to your database
+//       this.$emit('addFish', fishData);
 
       this.$emit('hide');
     },
@@ -107,7 +110,6 @@ export default {
             type="submit"
             class="q-ml-md"
             icon="add"
-            @click="addFish"
           />        </q-card-section>
       </q-form>
     </q-card>

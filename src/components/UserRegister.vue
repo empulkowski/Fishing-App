@@ -1,6 +1,7 @@
 <template>
   <div class="user-register">
     <h1>Sign Up</h1>
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     <form @submit.prevent="submitForm">
       <div class="form-stuff">
       <div>
@@ -14,8 +15,9 @@
       <div>
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
-        <p v-if="password && password.length < 6" style="color: red;">Password should be at least 6 characters</p>
+        <p v-if="password && password.length < 5" style="color: red;">Password should be at least 6 characters</p>
       </div>
+
       <div>
         <button type="submit">Sign Up</button>
       </div>
@@ -39,30 +41,37 @@ export default {
     return {
       email: '',
       password: '',
-      username: ''
+      username: '',
+      errorMessage: ''
     }
   },
   methods: {
     async submitForm() {
-      // Check if password length is less than 6; if so, don't continue, just return after alerting user
-      if (this.password.length < 6) {
-        alert('Password should be at least 6 characters');
+      if (this.password.length < 5) {
+        this.errorMessage = 'Password should be at least 6 characters';
         return;
       }
-      console.log('username:', this.username);
-      console.log('email:', this.email);
-      console.log('password:', this.password);
+
+      // Check if the username already exists
+      let usernameSnap = await getDoc(doc(db, "usernames", this.username));
+      if (usernameSnap.exists()) {
+        this.errorMessage = 'This username is already in use by another account.';
+        return;
+      }
 
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
+        const {user} = userCredential;
 
-        // After creating user add username to the Firestore
+        // After creating user add username and email to the Firestore
         try {
-          await setDoc(doc(db, "users", userCredential.user.uid), {
-            username: this.username
+          // Set user document with email field
+          await setDoc(doc(db, "users", user.uid), {
+            username: this.username,
+            email: this.email
           });
 
-          let docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
+          let docSnap = await getDoc(doc(db, "users", user.uid));
           if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
           } else {
@@ -78,7 +87,8 @@ export default {
         let message = '';
         switch (error.code) {
           case 'auth/email-already-in-use':
-            message = 'This email address is already in use by another account.';
+          case 'auth/username-already-in-use':
+            message = 'This ' + error.code.split('/')[1] + ' is already in use by another account.';
             break;
           case 'auth/invalid-email':
             message = 'The email address is not valid.';
@@ -93,7 +103,7 @@ export default {
             message = 'An error occurred during registration. Please try again.';
         }
         // Display the error message to the user
-        console.log(message);
+        this.errorMessage = message;
       }
     }
   }
@@ -199,5 +209,10 @@ button:hover {
 
 p {
   color: red;
+}
+.error {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
 }
 </style>

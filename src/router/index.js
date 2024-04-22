@@ -12,24 +12,7 @@ export default route(function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes: [
-      ...routes,
-      {
-        path: '/home',
-        name: 'Home',
-        component: IndexPage,
-      },
-      {
-        path: '/catch-log',
-        name: 'CatchLog',
-        component: CatchLog,
-      },
-      {
-        path: '/fishsearch',
-        name: 'FishSearch',
-        component: FishSearch,
-      },
-    ],
+    routes,
 
     // Leave this as is and make changes in quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode

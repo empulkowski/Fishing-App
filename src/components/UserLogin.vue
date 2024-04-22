@@ -11,8 +11,11 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-
-      <div>
+       <div class="alert" v-if="loginError">{{ loginError }}</div>
+       <div>
+         <label for="remember">
+           <input type="checkbox" id="remember" v-model="remember"> Remember me
+         </label>
         <button type="submit">Log In</button></div>
       <div class="signup-prompt">
         <p>New to this app?</p>
@@ -35,11 +38,13 @@ export default {
     return {
       email: '',
       password: '',
-      username: ''
+      username: '',
+      loginError: ''
     }
   },
   methods: {
     async submitForm() {
+      this.loginError = '';
       try {
         const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
         console.log(userCredential);
@@ -58,6 +63,7 @@ export default {
         // Navigate to '/home' if login is successful
         this.$router.push("/#");
       } catch (error) {
+        this.loginError = error.message;
         console.error('Error occurred when signing in:', error);
       }
     }
@@ -158,5 +164,11 @@ button:hover {
 
 .router-link:hover {
   color: #005999;
+}
+
+.alert {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
 }
 </style>
