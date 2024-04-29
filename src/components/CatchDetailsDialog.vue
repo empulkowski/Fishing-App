@@ -143,7 +143,7 @@ export default {
   font-weight: bold;
 }
 .image-section{
-  backgound-color: black;
+  background-color: black;
 }
 .q-btn-close {
   margin-left: 8px;

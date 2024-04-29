@@ -125,7 +125,7 @@ html body.desktop.no-touch.body--light div#q-app div.q-layout.q-layout--standard
 
 }
 
-.my-drop-down . q-item{
+.my-drop-down .q-item{
   padding: 10px 20px;
 }
 .pointer-cursor {
