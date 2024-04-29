@@ -12,7 +12,7 @@
             removable
             @remove="removeFriend(friend)"
           >
-            <span class="friend-name">{{ friend.username }} (ID: {{ friend.friendId }})</span> <!-- Debug line -->
+            <span class="friend-name">{{ friend.username }}</span>
             <q-btn outline color="primary" dense class="custom-view-btn" @click.stop="viewFishingLog(friend.friendId)">
               <q-icon name="remove_red_eye" size="1em" class="icon-style"/>
               <span class="view-button-text"> View Fishing Log </span>
@@ -24,12 +24,15 @@
 
         <div class="add-friend-section">
           <div class="text-h5">Add New Friend</div>
-          <q-input class="q-mt-md" filled v-model="friendEmail" label="Enter friend's email"/>
-          <div v-if="errorMessage" class="text-negative q-mt-sm">{{ errorMessage }}</div>
-          <q-btn class="q-mt-md" label="Verify Email" color="primary" @click="verifyFriendEmail"/>
+          <q-input filled class="q-mt-md" v-model="friendEmail" label="Enter friend's email">
+            <template v-slot:append>
+              <q-btn :color="buttonColor" :text-color="buttonTextColor" label="Find Friend" class="q-pa-md custom-btn" style="padding: 0 30px"  @click="verifyFriendEmail" @mouseover="onHover" @mouseleave="onLeave"></q-btn>
+            </template>
+          </q-input>
+
           <div v-if="potentialFriend" class="q-mt-md potential-friend-section">
             Would you like to add: {{ potentialFriend.username }}
-            <q-btn class="q-mt-sm" label="yes" color="#327576" @click="addFriend"/>
+            <q-btn class="q-mt-sm" label="yes" @click="addFriend"/>
           </div>
         </div>
       </q-card-section>
@@ -57,13 +60,22 @@ export default {
       friends: [],
       potentialFriend: null,
       errorMessage: null,
+      buttonColor: '#327576',
+      buttonTextColor: 'white',
+      defaultColor: '#327576',
+      hoverColor: '#143D56',
     };
   },
   mounted() {
     this.fetchFriends();
   },
   methods: {
-
+    onHover() {
+      this.buttonColor = this.hoverColor;
+    },
+    onLeave() {
+      this.buttonColor = this.defaultColor;
+    },
     async verifyFriend() {
       const emailToSearchFor = this.friendEmail.trim();
       const targetUserSnapshot = await getDocs(query(collection(db, 'users'), where('email', '==', emailToSearchFor)));
@@ -162,14 +174,26 @@ async removeFriend(friend) {
 };
 </script>
 
-<!-- Style stays the same -->
+
 <style scoped>
+.custom-btn {
+  background-color: #327576;
+  color: white;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+  border-radius: 4px;
+}
+
 .card-style {
   width: 600px;
   background: #fafafa;
   border-radius: 15px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+
 }
+
+
 
 .title-style {
   background-color: #143D56;
@@ -180,6 +204,12 @@ async removeFriend(friend) {
   text-align: center;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  font-family: "Bebas Neue";
+}
+.text-h5{
+  color: #327576;
+  font-family: "Bebas Neue";
+  font-size: 20px;
 }
 
 .friend-item {
@@ -192,11 +222,12 @@ async removeFriend(friend) {
   height: 50px;
   background: #fff;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.05);
-}
 
+}
 .friend-name {
   font-size: 1.125rem;
   font-weight: 600;
+  font-family: "Bebas Neue";
 }
 
 .list-section,
@@ -206,7 +237,7 @@ async removeFriend(friend) {
 
 .separator {
   margin: 20px 0;
-  border-top: 2px solid #f0f0f0;
+  border-top: 2px solid #143D56;
 }
 
 .potential-friend-section {
@@ -216,6 +247,7 @@ async removeFriend(friend) {
 .close-button {
   padding: 5px 20px;
   font-weight: 600;
+  color: #143D56;
 }
 
 .q-card__section {
@@ -230,6 +262,7 @@ div.q-gutter-md:nth-child(2) {
 .custom-view-btn {
   border-radius: 5px;
   margin-left: 10px;
+  background-color: #143D56;
 
 }
 
@@ -238,11 +271,12 @@ div.q-gutter-md:nth-child(2) {
   margin-right: 5px;
 }
 
-.view-button-text {
-  color: #327576;
+
+.q-mt-sm{
+  background-color: #327576;
+  color: white;
+  margin-left: 10px;
 }
-
-
 .add-friend-section {
   margin-left: 20px;
   margin-right: 20px;

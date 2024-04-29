@@ -1,14 +1,13 @@
 <template>
-  <div id="content-container">
-    <div class="q-pa-md">
-    <div class="footer-content">
-<!--      <p>{{ currentCity }}</p>-->
-      <p>{{ currentDate }}</p>
-      <p>{{ currentTime }}</p>
-      <p v-if="currentTemperature !== null">{{ currentTemperature }}°F</p>
+  <q-footer class="q-pa-md">
+    <div id="content-container">
+      <div class="footer-content">
+        <p>{{ currentDate }}</p>
+        <p>{{ currentTime }}</p>
+        <p v-if="currentTemperature !== null">{{ currentTemperature }}°F</p>
+      </div>
     </div>
-  </div>
-  </div>
+  </q-footer>
 </template>
 
 <script>
@@ -110,6 +109,9 @@ export default {
   position: fixed;
   width: 100%;
   bottom: 0;
+  background-image: url("../assets/luressmall.jpg");
+  box-shadow: 0px -4px 8px rgba(0,0,0,0.3);
+  height:100px;
 }
 #content-container {
   display: flex;

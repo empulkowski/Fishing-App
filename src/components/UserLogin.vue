@@ -81,12 +81,13 @@ body {
 
 .login {
   max-width: 400px;
-  margin: 40px auto;
+  margin: 70px auto;
   padding: 0px;
   border: none;
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+
 }
 
 h1 {

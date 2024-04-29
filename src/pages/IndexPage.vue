@@ -47,7 +47,7 @@ export default {
       openAddHotSpotModal,
       closeAddHotSpotModal,
       mapboxAccessToken: 'sk.eyJ1IjoiZW1wdWxrb3dza2kiLCJhIjoiY2xweWt1ajB2MHZxNjJpb2F3anFpbzg5dCJ9.7lwNowFsbEgcBaT_UHobvw', // Replace with your Mapbox access token
-
+      isActive: false,
     };
 
   },
@@ -58,6 +58,9 @@ export default {
     };
   },
   methods: {
+    toggleActiveStatus() {
+      this.isActive = !this.isActive;
+    },
     searchLakeButtonClicked() {
       this.searchLake = this.searchTerm;
     },
@@ -83,25 +86,28 @@ export default {
     <div class="main-container q-gutter-md q-flex" id="main-container">
       <!-- Navigation circles column (Left half) -->
       <div id="nav-circles">
-        <!-- Top row -->
-        <div class="circle" @click="openAddFishModal">
-          <img src="../assets/fish.png" alt="circle image of fish. ">
+        <div class="nav-row">
+          <div class="circle add-fish-button" @click="openAddFishModal" style="cursor: pointer;">
+            <img src="../assets/addFIshStroke.png" alt="circle image of fish. ">
+
+          </div>
+
+          <div class="circle friends-button" @click="openFriendsListModal" style="cursor: pointer;">
+            <img src="../assets/friendsStroke.png" alt="circle image of a friend. ">
+
+          </div>
         </div>
+        <div class="nav-row">
+          <router-link class="circle" to="/log">
+            <img src="../assets/fishingLogStroke.png" alt="circle image of fishing log.">
 
-        <div class="circle" @click="openFriendsListModal">
-          <img src="../assets/friend.png" alt="circle image of a friend. ">
+          </router-link>
+
+          <router-link class="circle" :to="{ name: 'FishSearch' }">
+            <img src="../assets/fishSearchStroke.png" alt="circle image of fish search.">
+          </router-link>
         </div>
-
-        <!-- Bottom row -->
-        <router-link class="circle" to="/log">
-          <img src="../assets/log.png" alt="circle image of fishing log.">
-        </router-link>
-
-        <router-link class="circle" :to="{ name: 'FishSearch' }">
-          <img src="../assets/searchFish.png" alt="circle image of fish search.">
-        </router-link>
       </div>
-
 
       <!-- Hotspot col -->
       <div class="hotspot-column">
@@ -131,111 +137,149 @@ export default {
 
 
 <style scoped>
+#main-container {
+  gap: 5px;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #327576;
+  align-items: center;
 
-
-
-
-.nav-container img {
-  width: 300px;
 }
 
 #nav-circles {
-  display: grid;
-  align-items: center;
-  grid-template-columns: repeat(2, auto);
-  grid-template-rows: repeat(2, auto);
-  justify-content: center;
-  grid-gap: 20px;
-  margin: 0px;
-}
-
-.circle {
-  margin: 10px;
-  width: 280px;
-  height: 280px;
-  transition: all 0.3s ease;
-  cursor: pointer;
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   align-items: center;
-  justify-content: center;
+  margin: auto;
+  max-width: 380px;
 }
-a.circle{
-  width: 280px;
-  height: 280px;
+.friends-button,
+.add-fish-button {
+
+}
+.circle img,
+a.circle img {
+  width: 380px;
+ height: auto;
+}
+.circle {
+  margin: -50px;
+  transition: transform 0.3s ease-in-out;
+
 }
 .circle:hover {
   transform: scale(1.1);
 }
-
-.circle:active {
-  transform: scale(0.9);
+.circle.active {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 }
-
-.circle img {
-  max-width: 100%;
-  object-fit: cover;
-}
-
-
-.map-container {
-  padding: 8px;
-}
-
 
 .hotspot-column {
-  margin-right: 40px;
-  margin-top: 37px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 50%;
+  box-sizing: border-box;
+  padding-right: 40px;
+
 }
 
 .hot-spot-bar {
   background-color: #1D4E4F;
   color: white;
   padding: 7px;
-  margin: 0px;
+  margin-bottom: 10px;
   font-family: "Bebas Neue", Serif;
   text-align: center;
   font-size: 30px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-
-
 }
 
-#main-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0;
-  padding: 0;
-  background-color: #327576;
-    max-height: 620px;
-    overflow: auto;
-
-
-  }
-
-div.hotspot-container {
-  background-color: #143D56;
-  margin: 15px;
+.hotspot-container {
+  background: #143D56;
+  flex: 1;
+  margin: 0 15px;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-
+  overflow: hidden;
 }
 
-div.map-container:nth-child(1) {
-  margin: 0px;
+.map-container {
+  height: 100%;
+  padding: 8px;
+}
+.nav-row {
+  display: flex;
+  justify-content: space-evenly;
 }
 
+@media screen and (max-width: 1024px) {
+  #main-container {
+    flex-direction: column;
+    align-items: normal;
+    width: 100%;
+  }
+  #nav-circles {
+    justify-content: center;
+    padding: 0 15px;
 
+
+  }
+
+  .circle {
+    margin-left: 50px;
+  }
+
+  .hotspot-column {
+    padding-top: 20px;
+    width: 100%;
+    margin: 0px;
+    flex: 1;
+  }
+  .hotspot-container {
+    width: 100%;
+    margin: 0px;
+  }
+  .map-container {
+    width: 100%;
+  }
+  /* Add any additional styles here */
+}
 @media screen and (max-width: 768px) {
   #main-container {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: normal;
+    width: 100%;
   }
+  #nav-circles {
+    max-width: 100%;
 
-  .right-column {
-    margin-top: 20px;
+  }
+  .hotspot-column {
+    padding-top: 20px;
+    width: 100%;
+    margin: 0px;
+    flex: 1;
+  }
+  #nav-circles, .hotspot-column {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .hotspot-container {
+    width: 100%;
+    margin:15px;
+
+  }
+  .map-container {
+    width: 100%;
+    padding: 0;
+
   }
 }
-
-
 </style>
-

@@ -3,7 +3,6 @@
   <q-layout>
     <q-header>
       <NavigationBar />
-      <!--    <NavigationBar :user-name="userName" :user-profile-image="userProfileImage" />-->
     </q-header>
 <q-page-container>
 <router-view />

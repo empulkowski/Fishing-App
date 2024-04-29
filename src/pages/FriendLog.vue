@@ -14,6 +14,9 @@
         :sort-method="customSort"
         virtual-scroll
       >
+        <template v-slot:top>
+          <div class="title">Fishing Log</div>
+        </template>
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td :props="props" auto-width v-for="col in columns" :key="col.name">
@@ -125,3 +128,41 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+
+.my-table {
+  padding: 20px;
+  margin-top: 120px;
+  margin-bottom: 60px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+.title {
+  color: white;
+  font-size: 40px;
+  font-family: "Bebas Neue", Serif;
+
+  background-color: #1D4E4F;
+  border-radius: 3px;
+  width: 100%;
+  text-align: center;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+.flex-center-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+.my-table{
+  font-family: "Bebas Neue", Serif;
+}
+.q-page{
+  background-color: #327576;
+}
+q.button{
+  background-color:#327576;
+  color: #327576;
+}
+</style>

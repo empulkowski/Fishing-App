@@ -90,8 +90,8 @@ export default {
 
           <q-card-section>
           <q-input v-model="location" label="Location"/>
-          <q-input v-model="weight" label="Weight" type="number"/>
-          <q-input v-model="length" label="Length" type="number"/>
+          <q-input v-model="weight" label="Weight (lbs)" type="number"/>
+          <q-input v-model="length" label="Length (in)" type="number"/>
           </q-card-section>
           <q-separator vertical />
           <q-card-section>

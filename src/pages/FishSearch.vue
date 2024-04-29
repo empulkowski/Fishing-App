@@ -1,31 +1,49 @@
 <template>
   <q-page>
-  <div class="data-render">
-    <h1>Image Search</h1>
-    <div class="form-stuff">
-      <div>
-        <input type="text" v-model="fishName" placeholder="Enter fish name" />
-        <button @click="fetchFishData">Search</button>
-      </div>
-      <div v-if="fishData" class="fish-info">
-        <div>
-          <h2>{{ fishData.preferred_common_name }}</h2>
-          <img class="fish-image" v-if="fishData.default_photo" :src="fishData.default_photo.square_url" alt="Fish Image">
+    <div class="grid-container">
+      <div class="data-render">
+        <h1>Image Search</h1>
+        <div class="form-stuff">
+          <div>
+
+            <input type="text" v-model="fishName" placeholder="Enter fish name"/>
+            <button @click="fetchFishData">Search</button>
+          </div>
+          <!-- Fish Info -->
+          <div v-if="fishData" class="fish-info">
+            <div>
+              <h2>{{ fishData.preferred_common_name }}</h2>
+              <img class="fish-image" v-if="fishData.default_photo" :src="fishData.default_photo.square_url"
+                   alt="Fish Image">
+            </div>
+          </div>
+          <!-- Locations Info -->
+          <div v-if="fishData" class="locations-info">
+            <h2>Fish Details and Locations</h2>
+            <ul>
+              <li v-for="(location, index) in fishLocations" :key="index">
+                {{ location }}
+              </li>
+            </ul>
+          </div>
         </div>
-<!--        <div v-if="fishLocations.length > 0" class="locations">-->
-<!--          <h3>Locations where {{ fishData.preferred_common_name }} has been found:</h3>-->
-<!--          <ul>-->
-<!--            <li v-for="(location, index) in fishLocations" :key="index">-->
-<!--              {{ location }}-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
+      </div>
+
+
+          <div class="additional-info">
+            <div class="reg-wrapper">
+            <h1>Check Regulations</h1>
+
+            <a href="https://dnr.wisconsin.gov/topic/fishing/regulations" target="_blank" rel="noopener noreferrer">
+              <img class="regulations-image" src="../assets/dnr.jpg" alt="Wisconsin Fishing Regulations">
+            </a>
+
+            </div>
+
       </div>
     </div>
-  </div>
   </q-page>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -73,16 +91,65 @@ export default {
 };
 </script>
 <style scoped>
-.data-render {
-  max-width: 300px;
-  margin: 40px auto;
-  padding: 0px;
-  border: none;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+.reg-wrapper{
+  margin-top: 140px;
+  margin-right: 50px;
+  width: 600px;
+  background-color:#143D56;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.regulations-image {
+width: 600px;
+  height: auto;
+  padding: 20px;
+}
+.locations-info {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 10px;
 }
 
+.locations-info h2 {
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.locations-info ul {
+  list-style-type: none;
+}
+
+.locations-info li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.locations-info li:last-child {
+  border: none;
+}
+
+.data-render {
+  max-width: 500px;
+  margin-top: 140px;
+  margin-left: 50px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+}
+.additional-info > h1:nth-child(1){
+
+  background-color: #327576;
+}
+
+.additional-info{
+  margin-right:100px;
+}
 h1 {
   text-align: center;
   color: white;
@@ -94,17 +161,19 @@ h1 {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-h2{
+
+h2 {
   font-family: "Bebas Neue", sans-serif;
   font-size: 30px;
   text-align: center;
 }
 
-h3{
+h3 {
   font-family: "Bebas Neue", sans-serif;
   font-size: 25px;
   text-align: center;
 }
+
 .form-stuff {
   padding: 20px;
 }
@@ -124,6 +193,7 @@ input[type="text"] {
   background-color: #f0f0f0;
   margin-bottom: 10px;
 }
+
 button {
   padding: 14px;
   border-radius: 5px;
@@ -140,14 +210,28 @@ button:hover {
   background-color: #143D56;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
 .fish-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .fish-image {
   width: 200px;
   height: 200px;
 
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

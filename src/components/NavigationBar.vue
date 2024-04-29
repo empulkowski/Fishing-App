@@ -15,9 +15,8 @@
       <div class="user-menu">
         <q-btn icon="fas fa-user" flat round ref="myRef"></q-btn>
         <q-menu ref="myMenu" anchor="top right" self="top left" :target="$refs.myRef" @mouseleave="closeMenu">
-
           <q-list clickable class="my-drop-down">
-            <q-item v-close-popup v-if="auth.currentUser" class="pointer-cursor">
+            <q-item v-close-popup v-if="userName != 'Guest'" class="pointer-cursor">
               <q-item-section @click="logout">Logout</q-item-section>
             </q-item>
 
@@ -97,10 +96,19 @@ export default {
 .navigation-bar {
   font-family: "Bebas Neue", Serif;
   text-align: center;
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #143D56;
+  z-index: 1000;
+  padding: 1rem;
+  background-image: url("../assets/luressmall.jpg");
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+  height:100px;
 
 }
-
 html body.desktop.no-touch.body--light div#q-app div.q-layout.q-layout--standard header.q-header.q-layout__section--marginal.absolute-top div.q-pa-md {
   background-color: #143D56;
 }
@@ -123,4 +131,5 @@ html body.desktop.no-touch.body--light div#q-app div.q-layout.q-layout--standard
 .pointer-cursor {
   cursor: pointer;
 }
+
 </style>

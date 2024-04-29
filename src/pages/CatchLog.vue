@@ -1,8 +1,8 @@
 <template>
-  <q-page>
+  <q-page class="flex-center-page">
     <div>
-      <!-- Skeleton loader -->
-        <q-table
+
+      <q-table
           class="my-table"
           v-if="!loadingFishRecords"
           :rows="fishRecords"
@@ -14,11 +14,15 @@
           :sort-method="customSort"
           virtual-scroll
         >
+        <template v-slot:top>
+          <div class="title">Fishing Log</div>
+        </template>
           <template v-slot:body="props">
-            <q-tr :props="props" @click="openDetailsDialog(props.row)">
+
+            <q-tr :props="props"  @click="openDetailsDialog(props.row)">
               <q-td :props="props" auto-width v-for="col in columns" :key="col.name">
       <span v-if="col.name === 'species'" style="display: flex; align-items: center;">
-        <q-btn round dense flat icon="more_vert" @click.stop="openDetailsDialog(props.row)" />
+        <q-btn round dense flat color="teal" icon="more_vert" @click.stop="openDetailsDialog(props.row)" />
         {{ props.row[col.name] }}
       </span>
                 <span v-else>
@@ -210,9 +214,37 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.q-page {
-  margin: 100px;
+
+.my-table {
+  padding: 20px;
+ margin: 0 60px 0px 60px;
 }
+.title {
+  color: white;
+  font-size: 40px;
+  font-family: "Bebas Neue", Serif;
 
-
+  background-color: #1D4E4F;
+  border-radius: 3px;
+width: 100%;
+text-align: center;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+.flex-center-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+.my-table{
+  font-family: "Bebas Neue", Serif;
+}
+.q-page{
+  background-color: #327576;
+}
+q.button{
+  background-color:#327576;
+  color: #327576;
+}
 </style>

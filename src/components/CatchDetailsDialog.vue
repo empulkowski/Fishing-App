@@ -4,34 +4,34 @@
     <q-card>
       <q-card-section class="q-pt-none">
         <q-card>
-          <q-card-section class="image-section">
-            <img src="" alt="Catch Image" class="catch-image" />
-          </q-card-section>
+<!--          <q-card-section class="image-section">-->
+<!--            <img src="" alt="Catch Image" class="catch-image" />-->
+<!--          </q-card-section>-->
 
           <q-card-section class="q-pb-none">
             <!-- Render editable or non-editable fields based on isEditing -->
-            <div v-if="!isEditing">Species: {{ selectedCatch.species }}</div>
+            <div v-if="!isEditing"><strong>Species:</strong>  {{ selectedCatch.species }}</div>
             <q-input v-else v-model="editedCatch.species" label="Species" dense />
 
-            <div v-if="!isEditing">Date: {{ selectedCatch.date }}</div>
+            <div v-if="!isEditing"><strong>Date:</strong>  {{ selectedCatch.date }}</div>
             <q-date v-else v-model="editedCatch.date" label="Date" dense :size="sizeForDatePicker" />
 
-            <div v-if="!isEditing">Location: {{ selectedCatch.location }}</div>
+            <div v-if="!isEditing"><strong>Location:</strong>  {{ selectedCatch.location }}</div>
             <q-input v-else v-model="editedCatch.location" label="Location" dense />
 
-            <div v-if="!isEditing">Tackle: {{ selectedCatch.tackle }}</div>
+            <div v-if="!isEditing"><strong>Tackle:</strong>  {{ selectedCatch.tackle }}</div>
             <q-input v-else v-model="editedCatch.tackle" label="Tackle" dense />
 
-            <div v-if="!isEditing">Time: {{ selectedCatch.time }}</div>
+            <div v-if="!isEditing"><strong>Time:</strong>  {{ selectedCatch.time }}</div>
             <q-time v-else v-model="editedCatch.time" label="Time" dense :size="sizeForTimePicker"/>
 
-            <div v-if="!isEditing">Weight: {{ selectedCatch.weight }}</div>
+            <div v-if="!isEditing"><strong>Weight:</strong>  {{ selectedCatch.weight }}</div>
             <q-input v-else v-model="editedCatch.weight" label="Weight" dense />
 
-            <div v-if="!isEditing">Length: {{ selectedCatch.length }}</div>
+            <div v-if="!isEditing"><strong>Length:</strong>  {{ selectedCatch.length }}</div>
             <q-input v-else v-model="editedCatch.length" label="Length" dense />
 
-            <div v-if="!isEditing">Notes: {{ selectedCatch.notes }}</div>
+            <div v-if="!isEditing"><strong>Notes:</strong>  {{ selectedCatch.notes }}</div>
             <q-input v-else v-model="editedCatch.notes" label="Notes" dense />
 
           </q-card-section>
@@ -41,13 +41,13 @@
         <q-btn flat
           v-if="!isEditing"
           icon="fa-solid fa-pen-to-square fa-2xs"
-          color="primary"
+          color="#327576"
           @click="toggleEditing" ></q-btn>
 
         <q-btn v-else label="Save" color="primary" @click="saveChanges" />
 
         <q-btn flat label="Delete" color="negative" @click="deleteCatch" v-if="!isEditing" />
-        <q-btn flat label="Close" color="primary" @click="closeDialog" />
+        <q-btn flat label="Close" color="#327576" @click="closeDialog" />
       </q-card-actions>
         </q-card>
       </q-card-section>
